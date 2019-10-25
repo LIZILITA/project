@@ -13,8 +13,11 @@ submitButton.addEventListener("click", submitForm);
 window.addEventListener("keyup", function (k) {
   if(k.keyCode===13){
     submitForm();
+  }else {
+    passwordInput.classList.remove("missing");
+    passwordConfirmInput.classList.remove("missing")
+    strengthMeter.className = strengthMeterCode[getPasswordStrengthFrom0To5(passwordInput.value)];
   }
-  strengthMeter.className=strengthMeterCode[getPasswordStrengthFrom0To5(passwordInput.value)];
 });
 function submitForm() {
   /* YOUR CODE HERE */
@@ -22,12 +25,12 @@ function submitForm() {
     passwordInput.classList.add("missing");
   }else
     if(passwordConfirmInput.value===""){
-    passwordConfirmInput.classList.add("missing")
+    passwordConfirmInput.classList.add("missing");
     }else
   if(passwordInput.value!==passwordConfirmInput.value){
-    window.alert("您的密码输入不一致，请检查一遍并重新输入")
+    window.alert("您的密码输入不一致，请检查一遍并重新输入");
   }else {
-    window.alert("welcome!" + usernameInput.value + "!")
+    window.alert("welcome!" + usernameInput.value + "!");
   }
 }
 /* YOUR CODE HERE */
