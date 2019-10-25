@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Static Template</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <main id="signup-form">
+      <h1>Sign up!</h1>
+
+      <div class="row">
+        <label for="signup__username">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="signup__username"
+          placeholder="@yourname"
+        />
+      </div>
+
+      <div class="row">
+        <label for="signup__password">Password</label>
+        <input type="password" name="password" id="signup__password" />
+      </div>
+
+      <div class="row">
+        <div class="password_strength">
+          <div id="password_strength_meter" class="strength-0"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <label for="signup__password_confirm">Confirm password</label>
+        <input
+          type="password"
+          name="password_confirm"
+          id="signup__password_confirm"
+        />
+      </div>
+
+      <button id="submit-button">Submit</button>
+    </main>
+    <script src="index.js"></script>
+  </body>
+</html>
