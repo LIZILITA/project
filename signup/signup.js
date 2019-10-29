@@ -8,20 +8,19 @@ const submitButton = document.querySelector("button");
 const strengthMeter = document.querySelector("#password_strength_meter");
 const strengthMeterCode = ["strength-0", "strength-1", "strength-2", "strength-3", "strength-4", "strength-5"];
 
-//添加submit按钮点击事件
+//添加submit按钮点击事件i
 submitButton.addEventListener("click", submitForm);
 //添加键盘up事件，回车提交，修改密码强度条，消除警告红框
 window.addEventListener("keyup", function (k) {
     //回车提交
     if (k.keyCode === 13) {
         submitForm();
-    } else {
-        //消除警告红框
-        passwordInput.classList.remove("missing");
-        passwordConfirmInput.classList.remove("missing");
-        //修改密码强度条，
-        strengthMeter.className = strengthMeterCode[getPasswordStrengthFrom0To5(passwordInput.value)];
     }
+    //消除警告红框
+    passwordInput.classList.remove("missing");
+    passwordConfirmInput.classList.remove("missing");
+    //修改密码强度条，
+    strengthMeter.className = strengthMeterCode[getPasswordStrengthFrom0To5(passwordInput.value)];
 });
 //提交事件
 function submitForm() {
@@ -31,9 +30,9 @@ function submitForm() {
     } else if (passwordConfirmInput.value === "") {
         passwordConfirmInput.classList.add("missing");
     } else
-        /*
-        检查输入一致
-         */
+    /*
+    检查输入一致
+     */
     if (passwordInput.value !== passwordConfirmInput.value) {
         window.alert("您的密码输入不一致，请检查一遍并重新输入");
     } else {
