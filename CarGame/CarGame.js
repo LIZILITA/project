@@ -1,7 +1,7 @@
 // Game Constants
 const NUMBLOCKS = 25;
-const MAXSPEED = 30;
-const MINSPEED = 5;
+const MAXSPEED = 80;
+const MINSPEED = 30;
 const FRAMERATE = 200;
 const CARSPRITES = [
     'url("Black_viper.png")',
