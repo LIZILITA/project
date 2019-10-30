@@ -1,0 +1,55 @@
+body{
+    background-image: url("road.jpeg");
+
+    flex-direction: row;
+    --rd-purple: rgb(96, 55, 251);
+    --red: rgb(255, 63, 76);
+    --orange: rgb(255, 144, 39);
+    --yellow: rgb(255, 205, 28);
+    --green: rgb(43, 197, 49);
+}
+
+.password_strength {
+    width: 50%;
+    height: 8px;
+    border-radius: 6px;
+    background: #dfdfdf;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin-top: 12px;
+}
+#Password_strength_meter {
+    width: 100%;
+    height: 100%;
+    transform-origin: left;
+}
+
+.strength-0 {
+    background: var(--red);
+    transform: scaleX(0.05);
+}
+
+.strength-1 {
+    background: var(--red);
+    transform: scaleX(0.2);
+}
+
+.strength-2 {
+    background: var(--orange);
+    transform: scaleX(0.4);
+}
+
+.strength-3 {
+    background: var(--yellow);
+    transform: scaleX(0.6);
+}
+
+.strength-4 {
+    background: var(--green);
+    transform: scaleX(0.8);
+}
+
+.strength-5 {
+    background: var(--green);
+    transform: scaleX(1);
+}

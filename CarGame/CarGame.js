@@ -1,89 +1,118 @@
 // Game Constants
 const NUMBLOCKS = 25;
-const MAXSPEED = 80;
-const MINSPEED = 30;
-const FRAMERATE = 200;
+const MAXSPEED = 40;
+const MINSPEED = 8;
+const FRAMERATE = 50;
 const CARSPRITES = [
     'url("Black_viper.png")',
     'url("Mini_van.png")',
     'url("Police.png")'
 ];
-// QUESTION 2.1 GENERATE ENEMIES
-// YOUR CODE HERE
-var numLives=3;
-var Body=document.getElementById("body");
-var enemy=document.createElement("div");
-enemy.classList.add("some_class");
-enemy.setAttribute("data-attr", "b1");
-var weight=genRandomNum(0,window.innerWidth).toString();
-enemy.setAttribute("style","margin-left:"+weight+"px;"+"background-position:center;position:absolute;margin-top:40px;width:40px;height:90px; background-image:"+CARSPRITES[genRandomNum(0,3)]+";background-size: cover;");
-enemy.setAttribute("data-speed",genRandomNum(MINSPEED,MAXSPEED).toString());
-Body.appendChild(enemy);
-// QUESTION 2.2 STYLE ENEMIES
-// YOUR CODE HERE
-var myCar=document.createElement("div");
-myCar.setAttribute("style","height:90px;width:40px;position:absolute;background-position:center;background-image:url(Car.png)");
+const strengthMeterCode = ["strength-0", "strength-1", "strength-2", "strength-3", "strength-4", "strength-5"];
+const enemyName = ["enemy0", "enemy1", "enemy2", "enemy3", "enemy4", "enemy5", "enemy6", "enemy7", "enemy8", "enemy9"];
+//初始化数据，5血量，绑定body元素，设置生成车辆为0；
+var numLives = 5;
+var Body = document.getElementById("body");
+var numEnemy = 0;
+
+//创建十个div元素，这里指enemy
+function createEnemy() {
+    while (numEnemy < 10) {
+        Body.appendChild(document.createElement("div"));
+        numEnemy++;
+    }
+}
+
+createEnemy();
+//选中所有div元素存到enemyList数组中
+var enemyList = Body.querySelectorAll("div");
+
+//给所有的div加上style
+function addEnemyStyle() {
+    for (let i = 0; i < enemyName.length; i++) {
+        enemyList[i].classList.add("some_class");
+        enemyList[i].setAttribute("data-attr", "b1");
+        enemyList[i].setAttribute("style", "margin-left:" + genRandomNum(0, window.innerWidth).toString() + "px;" + "background-position:center;position:absolute;margin-top:40px;width:40px;height:90px; background-image:" + CARSPRITES[genRandomNum(0, 3)] + ";background-size: cover;");
+        enemyList[i].setAttribute("data-speed", genRandomNum(MINSPEED, MAXSPEED).toString());
+    }
+}
+
+//初始化enemy车辆
+addEnemyStyle();
+
+//创建自己的车辆
+var myCar = document.createElement("div");
+myCar.setAttribute("style", "height:90px;width:40px;position:absolute;background-position:center;background-image:url(Car.png)");
 Body.appendChild(myCar);
-// QUESTION 2.3 CREATE PLAYER
-// YOUR CODE HERE
 
-// QUESTION 2.4 Move and Reset Enemies
-// Move the enemeies down the screen
+//获取血条的元素
+var BloodBar = document.getElementsByName("HP");
+BloodBar.className="strength-3";
 
+//把所有的enemy往下移动
 function moveBlock() {
-    let Speed=Number(enemy.getAttribute("data-speed"));
-    let Top=Number(enemy.style.marginTop.match(/\d+/g)[0]);
-    enemy.style.marginTop=(Top+Speed).toString()+"px";
+    for (let i = 0; i < enemyName.length; i++) {
+        let Speed = Number(enemyList[i].getAttribute("data-speed"));
+        let Top = Number(enemyList[i].style.marginTop.match(/\d+/g)[0]);
+        enemyList[i].style.marginTop = (Top + Speed).toString() + "px";
+    }
 }
 
-// Move the enemeies back to the top
-// of the screen
+//把出了屏幕的enemy重新调到屏幕上方
 function moveBack() {
-    let enemyLocation=Number(enemy.style.marginTop.match(/\d+/g)[0]);
-    if(enemyLocation>window.innerHeight){
-        enemy.style.marginTop="-40px"
-        numLives++;
+    for (let i = 0; i < enemyName.length; i++) {
+        let enemyLocation = Number(enemyList[i].style.marginTop.match(/\d+/g)[0]);
+        if (enemyLocation > window.innerHeight) {
+            enemyList[i].style.marginTop = "-40px";
+        }
     }
 }
 
-// Check if we collided with any of them
+//检测主角车辆是否与其他车辆发生碰撞，并把发生碰撞的enemy调回到屏幕上方
 function detectCollide() {
-    let enemyLocationX=Number(enemy.style.marginLeft.match(/\d+/g)[0]);
-    let enemyLocationY=Number(enemy.style.marginTop.match(/\d+/g)[0]);
-    let myCarLocationX=Number(myCar.style.marginLeft.match(/\d+/g)[0]);
-    let myCarLocationY=Number(myCar.style.marginTop.match(/\d+/g)[0]);
-    let checkX=Math.abs(enemyLocationX-myCarLocationX);
-    let checkY=Math.abs(enemyLocationY-myCarLocationY);
-    if(checkX<40&&checkY<90){
-        numLives--;
-        enemy.style.marginTop="-40px"
+    for (let i = 0; i < enemyName.length; i++) {
+        //得到车辆的坐标和鼠标的坐标
+        let enemyLocationX = Number(enemyList[i].style.marginLeft.match(/\d+/g)[0]);
+        let enemyLocationY = Number(enemyList[i].style.marginTop.match(/\d+/g)[0]);
+
+        let myCarLocationX = Number(myCar.style.marginLeft.match(/\d+/g)[0]);
+        let myCarLocationY = Number(myCar.style.marginTop.match(/\d+/g)[0]);
+        //计算并判断距离是否小于车辆长度和宽度
+        let checkX = Math.abs(enemyLocationX - myCarLocationX);
+        let checkY = Math.abs(enemyLocationY - myCarLocationY);
+        if (checkX < 40 && checkY < 90) {
+            numLives--;
+            //把车调回
+            enemyList[i].style.marginTop = "-40px";
+            //更改血条
+            BloodBar.class = strengthMeterCode[numLives];
+        }
     }
-    if(numLives===0){
+    //如果血条为0就弹出窗口并重新加载界面设置血量和雪条
+    if (numLives === 0) {
         alert("Game Over!");
         window.location.reload();
-        numLives=3;
+        numLives = 5;
+        //更改血条
+        BloodBar.className = strengthMeterCode[numLives];
     }
 }
-document.addEventListener("mousemove",function (e) {
-    myCar.style.marginTop=(e.clientY-45).toString()+"px";
-    myCar.style.marginLeft=(e.clientX-20).toString()+"px";
+
+//让主角车辆跟随鼠标移动
+document.addEventListener("mousemove", function (e) {
+    myCar.style.marginTop = (e.clientY - 45).toString() + "px";
+    myCar.style.marginLeft = (e.clientX - 20).toString() + "px";
 });
-setInterval(playGame,FRAMERATE);
-// The main game event loop
+//给playGme加上定时器，每隔FRAMERATE毫秒调用一次
+setInterval(playGame, FRAMERATE);
+
 function playGame() {
     moveBlock();
     detectCollide();
     moveBack();
 }
 
-// QUESTION 2.5 RUNNING THE GAME
-// YOUR CODE HERE
-
-/* ----------------- */
-/* HELPER FUNCTIONS  */
-/* ----------------- */
-// Generate A random integer between min_value
-// and max_value (inclusive)
+//返回一个介于两参数之间的随机数
 function genRandomNum(min_value, max_value) {
     return Math.round(Math.random() * (max_value - min_value) + min_value);
 }
