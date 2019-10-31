@@ -99,10 +99,14 @@ function detectCollide() {
     }
 }
 
-//让主角车辆跟随鼠标移动
-myCar.addEventListener("mousemove", function (e) {
+function myCarMove(e){
     myCar.style.marginTop = (e.clientY - 45).toString() + "px";
     myCar.style.marginLeft = (e.clientX - 20).toString() + "px";
+}
+//让主角车辆跟随鼠标移动
+document.addEventListener("mousemove", myCarMove);
+myCar.addEventListener("mousedown", function () {
+    document.addEventListener("mousemove", myCarMove);
 });
 //给playGme加上定时器，每隔FRAMERATE毫秒调用一次
 setInterval(playGame, FRAMERATE);
