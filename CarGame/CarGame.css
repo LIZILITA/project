@@ -54,7 +54,8 @@ body{
     transform: scaleX(1);
 }
 #HP{
-    text-decoration-color: #c7254e;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-style: revert;
     height: 18px;
     width: 18px;
     padding-left: 0px;

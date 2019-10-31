@@ -85,6 +85,7 @@ function detectCollide() {
             enemyList[i].style.marginLeft=genRandomNum(0,window.innerWidth).toString()+"px";
             //更改血条
            document.getElementById("Password_strength_meter").classList.replace(strengthMeterCode[numLives+1],strengthMeterCode[numLives]);
+            document.getElementById("HP").innerText="HP:"+numLives.toString();
         }
     }
     //如果血条为0就弹出窗口并重新加载界面设置血量和雪条
@@ -94,6 +95,7 @@ function detectCollide() {
         numLives = 5;
         //更改血条
         document.getElementById("Password_strength_meter").classList.replace(strengthMeterCode[numLives],strengthMeterCode[5]);
+        document.getElementById("HP").innerText="HP:"+numLives.toString();
     }
 }
 
