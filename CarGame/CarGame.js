@@ -100,7 +100,7 @@ function detectCollide() {
 }
 
 //让主角车辆跟随鼠标移动
-myCar.addEventListener("mousedown", function (e) {
+myCar.addEventListener("mousemove", function (e) {
     myCar.style.marginTop = (e.clientY - 45).toString() + "px";
     myCar.style.marginLeft = (e.clientX - 20).toString() + "px";
 });
