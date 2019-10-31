@@ -53,3 +53,10 @@ body{
     background: var(--green);
     transform: scaleX(1);
 }
+#HP{
+    text-decoration-color: #c7254e;
+    height: 18px;
+    width: 18px;
+    padding-left: 0px;
+    text-align: center;
+}
