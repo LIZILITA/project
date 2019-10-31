@@ -94,13 +94,13 @@ function detectCollide() {
         window.location.reload();
         numLives = 5;
         //更改血条
-        document.getElementById("Password_strength_meter").classList.replace(strengthMeterCode[numLives],strengthMeterCode[5]);
+        $("#Password_strength_meter").className.replace("strength-0","strength-5");
         document.getElementById("HP").innerText="HP:"+numLives.toString();
     }
 }
 
 //让主角车辆跟随鼠标移动
-document.addEventListener("mousemove", function (e) {
+myCar.addEventListener("mousedown", function (e) {
     myCar.style.marginTop = (e.clientY - 45).toString() + "px";
     myCar.style.marginLeft = (e.clientX - 20).toString() + "px";
 });
