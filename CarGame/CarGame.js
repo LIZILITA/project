@@ -61,7 +61,7 @@ function moveBack() {
     for (let i = 0; i < enemyList.length; i++) {
         let enemyLocation = Number(enemyList[i].style.marginTop.match(/\d+/g)[0]);
         if (enemyLocation > window.innerHeight) {
-            enemyList[i].style.marginTop = "-90px";
+            enemyList[i].style.marginTop = "0px";
             enemyList[i].style.marginLeft=genRandomNum(0,window.innerWidth).toString()+"px";
         }
     }
@@ -81,7 +81,7 @@ function detectCollide() {
         if (checkX < 40 && checkY < 90) {
             numLives--;
             //把车调回
-            enemyList[i].style.marginTop = "-90px";
+            enemyList[i].style.marginTop = "0px";
             enemyList[i].style.marginLeft=genRandomNum(0,window.innerWidth).toString()+"px";
             //更改血条
            document.getElementById("Password_strength_meter").classList.replace(strengthMeterCode[numLives+1],strengthMeterCode[numLives]);
