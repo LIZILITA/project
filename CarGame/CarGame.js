@@ -62,6 +62,7 @@ function moveBack() {
         let enemyLocation = Number(enemyList[i].style.marginTop.match(/\d+/g)[0]);
         if (enemyLocation > window.innerHeight) {
             enemyList[i].style.marginTop = "-40px";
+            enemyList[i].style.marginLeft=genRandomNum(0,window.innerWidth).toString()+"px";
         }
     }
 }
@@ -81,6 +82,7 @@ function detectCollide() {
             numLives--;
             //把车调回
             enemyList[i].style.marginTop = "-40px";
+            enemyList[i].style.marginLeft=genRandomNum(0,window.innerWidth).toString()+"px";
             //更改血条
            document.getElementById("Password_strength_meter").classList.replace(strengthMeterCode[numLives+1],strengthMeterCode[numLives]);
         }
