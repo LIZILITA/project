@@ -60,7 +60,7 @@ function moveBlock() {
 function moveBack() {
     for (let i = 0; i < enemyList.length; i++) {
         let enemyLocation = Number(enemyList[i].style.marginTop.match(/\d+/g)[0]);
-        if (enemyLocation > window.innerHeight) {
+        if(enemyLocation > window.innerHeight) {
             enemyList[i].style.marginTop = "0px";
             enemyList[i].style.marginLeft=genRandomNum(0,window.innerWidth).toString()+"px";
         }
