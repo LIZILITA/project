@@ -623,6 +623,7 @@
     - 保持状态只读，就是说不能直接修改状态，要修改Store的状态，必须要通过派发，一个action对象完成。
   - 数据改变只能通过纯函数完成
     - 这里所说的纯函数就是Reducer，redux这个名字的前三个字母Red代表的就是Reducer。、
+  
 - Redux实例
   
   - ```
@@ -870,10 +871,217 @@
 
 - 容器组件和傻瓜组件
   - 在redux框架下，一个react组件基本上要完成两个功能
-    - 和Redux Store 打交道，读取Store的状态，用于初始化组件的状态，同时还要监听Store的状态改变。当Store状态发生变化时，需要更新组件状态，从而驱动组件重新渲染，当需要更新Store状态时，就要派发action对象
-    - 根据当前的props和state，渲染出用户界面
+    - 和Redux Store 打交道，读取Store的状态，用于初始化组件的状态，同时还要监听Store的状态改变。当Store状态发生变化时，需要更新组件状态，从而驱动组件重新渲染，当需要更新Store状态时，就要派发action对象————外层组件，容器组件
+    - 根据当前的props和state，渲染出用户界面————内层组件，傻瓜组件
+    
+  - 傻瓜组件
+  
+    - ```
+      class Counter extends Component {
+        render() {
+          const {caption, onIncrement, onDecrement, value} = this.props;
+      
+          return (
+            <div>
+              <button style={buttonStyle} onClick={onIncrement}>+</button>
+              <button style={buttonStyle} onClick={onDecrement}>-</button>
+              <span>{caption} count: {value}</span>
+            </div>
+          );
+        }
+      }
+      ```
+  
+    - Counter组件完全没有state，所有的数据都来源于props，这种组件被称为无状态组件
+  
+  - 容器组件
+  
+    - ```
+      class CounterContainer extends Component{
+      render(){
+      return<Counter caption={this.props.caption}
+      onIncrement={this.onIncrement}
+      onDecrement={this.onDecrement}
+      value={this.state.value}/>
+      }
+      }
+      ```
+  
+    - 容器组件承担了所有和Store相关的工作，它的render函数只负责渲染傻瓜组件，传递必要的props。
+  
+  - summary组件也被分为傻瓜组件和聪明组件
+  
+- 组件Context
 
+  - 用来解决props的参数传递困难问题、
 
+  - 说明
+
+    - 所谓Context，就是"上下文环境"，让一个树状组件上所有组件都能访问一个共同的对象
+    - 首先，上级组件要声明自己支持context，并提供一个函数来返回代表Context的对象
+    - 然后，这个上级组件之下的所有子组件，只要声明自己需要这个context，就可以通过this.context访问到这个共同的环境对象
+
+  - 创建提供context的组件
+
+    - ```
+      import {PropTypes, Component} from 'react';
+      
+      class Provider extends Component {
+      //返回代表Context的对象
+        getChildContext() {
+          return {
+            store: this.props.store
+          };
+        }
+      //把子组件渲染出来
+        render() {
+          return this.props.children;
+        }
+      
+      }
+      
+      Provider.propTypes = {
+        store: PropTypes.object.isRequired
+      }
+      //为了让该组件能够被react认可为一个context的提供者，还需要指定childContextTypes属性
+      Provider.childContextTypes = {
+        store: PropTypes.object
+      };
+      
+      export default Provider;
+      
+      ```
+
+  - 子组件应用
+
+    - ```
+      class CounterContainer extends Component {
+        constructor(props, context) {
+        //在调用super的时候，带上context参数，用来初始化React组件实例中的context
+          super(props, context);
+      
+          this.onIncrement = this.onIncrement.bind(this);
+          this.onDecrement = this.onDecrement.bind(this);
+          this.onChange = this.onChange.bind(this);
+          this.getOwnState = this.getOwnState.bind(this);
+      
+          this.state = this.getOwnState();
+        }
+      //通过this.context.store访问store
+        getOwnState() {
+          return {
+            value: this.context.store.getState()[this.props.caption]
+          };
+        }
+      
+        onIncrement() {
+          this.context.store.dispatch(Actions.increment(this.props.caption));
+        }
+      
+        onDecrement() {
+          this.context.store.dispatch(Actions.decrement(this.props.caption));
+        }
+      
+        onChange() {
+          this.setState(this.getOwnState());
+        }
+      
+        shouldComponentUpdate(nextProps, nextState) {
+          return (nextProps.caption !== this.props.caption) ||
+            (nextState.value !== this.state.value);
+        }
+      
+        componentDidMount() {
+          this.context.store.subscribe(this.onChange);
+        }
+      
+        componentWillUnmount() {
+          this.context.store.unsubscribe(this.onChange);
+        }
+      
+        render() {
+          return <Counter caption={this.props.caption}
+            onIncrement={this.onIncrement}
+            onDecrement={this.onDecrement}
+            value={this.state.value} />
+        }
+      }
+      
+      CounterContainer.propTypes = {
+        caption: PropTypes.string.isRequired
+      };
+      
+      //为了让CounterContainer能访问到context，必须给CounterContainer类的contextTypes赋值和Provider.childer.childContextTypes一样的值。
+      CounterContainer.contextTypes = {
+        store: PropTypes.object
+      }
+      
+      export default CounterContainer;
+      ```
+
+    - ```
+      constructor(){
+      super(...arguments);
+      }
+      ```
+
+      - 我们不能直接使用argument，因为在javascript中argument表现得像一个数组而不是分开的一个个参数，但是我们通过扩展标识符就能把argument彻底变成传递给super的参数
+
+- React-Redux
+
+  - 已经有一个react-redux的库实现了这些工作，就是react-redux
+
+    - 我们可以通过import {Provider}from 'react-redux'来直接导入使用context、
+
+  - 主要功能
+
+    - connect：连接容器组件和傻瓜组件
+    - Provider：提供包含store的context
+
+  - connect
+
+    - ```
+      export defalut connect (mapStateToProps,mapDispatchToProps)(Counter)
+      ```
+
+    - connect是react-redux提供的一个函数，返回一个函数，这个函数的参数调用Counter这个傻瓜组件，最后产生的就是容器组件
+
+    - 这个容器组件要完成的工作
+
+      - 把state上的状态转化为内层傻瓜组件的props
+      - 把内层傻瓜组件中的用户动作转化为派发给Store的动作(action)
+
+    - mapStateToProps函数
+
+      - ```
+        function mapStateToProps(state,ownProps){
+        return :state[ownProps.caption]
+        }
+        ```
+
+    - mapDispatchToProps函数
+
+      - ```
+        function mapDispatchToProps(dispatch,ownProps){
+        return {
+        onIncrement:()=>{
+        dispatch(Actions.increment(ownProps.caption))
+        },
+        onDecrement:()=>{
+        dispatch(Actions.decrement(ownProps.caption))
+        }
+        }
+        }
+        ```
+
+      - 把内层傻瓜组件中用户的动作转化为派送给Store的动作，也就是把内层傻瓜组件暴露出来的函数类型的prop关联上dispatch函数的调用，每个prop代表的回调函数的主要区别就是dispatch函数的参数不同。
+
+  - provider
+
+    - react-redux要求store不光是一个Object，而且是必须包含三个函数的object。
+      - subscribe
+      - dispatch
+      - getState
 
 #### 模块化react和redux应用
 
@@ -891,4 +1099,4 @@
 
 #### 多页面应用
 
-#### 同构xxxxxxxxxx1 1
+#### 同构

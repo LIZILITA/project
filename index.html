@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="en" class="no-js">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta charset="UTF-8" />
+    <title>Particleground demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css" />
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <!-- remember, jQuery is completely optional -->
+    <!-- <script type='text/javascript' src='js/jquery-1.11.1.min.js'></script> -->
+    <script type='text/javascript' src='index.js'></script>
+
     <title>LUO</title>
 
     <!-- Bootstrap -->
@@ -16,32 +21,10 @@
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="js/bootstrap.min.js"></script>
 
-
-    <script>
-        function onload(){
-            <!--    添加获取地理位置的js-->
-            var Location = document.getElementById('LocationButton');
-            var LocationText=document.getElementById("LocationText");
-            Location.addEventListener("click", function () {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    LocationText.innerHTML=(position.coords.latitude + ", " + position.coords.longitude);
-                });
-            });
-
-
-            var emailButton=document.getElementById("emailButton");
-            var emailText=document.getElementById("email");
-            var emailtext=document.getElementById("emailtext");
-
-            emailButton.addEventListener("click", function (){
-                    emailtext.innerHTML=(emailText.value);
-                }
-            )
-        }
-    </script>
 </head>
-<body onload="onload()">
-<nav class="navbar navbar-default">
+
+<body>
+<nav class="navbar navbar-default" id="home">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -59,13 +42,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"上>
             <ul class="nav navbar-nav">
-                <li class="active" id="LocationButton"><a href="#">显示地理位置<span class="sr-only">(current)</span></a></li>
                 <li class="dropdown">
                     <!--                    下拉列表按钮-->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">小游戏<span class="caret"></span></a>
                     <!--                    下拉列表选项-->
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="background-color:transparent;border: 0;">
                         <li><a href="signup/signup.html">登录界面</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="CarGame/CarGame.html">赛车</a></li>
@@ -78,15 +60,16 @@
             </ul>
             <form class="navbar-form navbar-left">
                 <div class="form-group">
-                    <input id="email" type="text" class="form-control" placeholder="手机端右上角有菜单键哦">
+                    <input id="email" type="text" class="form-control" style="background-color:transparent;border: 0;" placeholder="手机端右上角有菜单键哦">
                 </div>
-                <button id="emailButton" type="submit" class="btn btn-default">提交</button>
+                <button id="emailButton" type="submit" class="btn btn-default" style="background-color:transparent;border: 0;">搜索</button>
             </form>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<p id="emailtext"></p>
-<p id="LocationText"></p>
 
 </body>
+
+<script id="c_n_script" src="https://blog-static.cnblogs.com/files/xiaokang01/js.js" color="255,192,203" opacity="50" count="121" zindex="-2">
+</script>
 </html>
